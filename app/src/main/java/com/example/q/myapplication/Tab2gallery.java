@@ -147,6 +147,7 @@ public class Tab2gallery extends Fragment {
         });
 
         return view;
+
     }
 
 
