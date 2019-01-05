@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +23,7 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -158,6 +160,16 @@ public class Tab2gallery extends Fragment {
                     Toast.makeText(mContext, "먼저 업로드할 파일을 선택하세요", Toast.LENGTH_SHORT).show();
                 }
                 startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);​*/
+            }
+        });
+        final android.support.design.widget.FloatingActionButton fab1 = view.findViewById(R.id.fab1);
+        fab1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Intent contactIntent = new Intent(getActivity(),UploadImage.class);
+                contactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+                startActivityForResult(contactIntent,0);
+                return false;
             }
         });
         return view;
