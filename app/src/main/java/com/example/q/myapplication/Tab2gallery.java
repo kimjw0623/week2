@@ -71,11 +71,6 @@ public class Tab2gallery extends Fragment {
     ImageAdapter adapter;
     ArrayList<String> ids = new ArrayList<>();
 
-
-    private final int REQ_CODE_SELECT_IMAGE = 1001;
-    private String mImgPath = null;
-    private String mImgTitle = null;
-    private String mImgOrient = null;​
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab2gallery, container, false);
