@@ -105,8 +105,7 @@ public class Tab2gallery extends Fragment {
         });
         stringRequest.setTag(TAG);
         queue.add(stringRequest);
-
-
+        //////////////////////////////////////////////////
         gallery.setOnItemClickListener(new OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -114,8 +113,8 @@ public class Tab2gallery extends Fragment {
                 // Sending image id to FullScreenActivity
                 Intent i = new Intent(getActivity().getApplicationContext(), Full_Image.class);
                 // passing array index
-                i.putExtra("array",images);
-                i.putExtra("position", position);
+                //i.putExtra("array",images);
+                i.putExtra("position", "http://socrip4.kaist.ac.kr:580/image/"+ids.get(position));
                 startActivity(i);
             }
         });

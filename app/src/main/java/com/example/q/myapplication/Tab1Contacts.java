@@ -74,8 +74,6 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         ListView listView =  view.findViewById(R.id.listview1);
         listView.setAdapter(adapter);
 
-
-
         final EditText listSearch = view.findViewById(R.id.listSearch);
         listSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -191,16 +189,12 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
                 jArray.put(sObject);
             }
             obj.put("list",jArray);//배열을 넣음
-            //System.out.println(obj.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         RequestQueue RequestQueue = Volley.newRequestQueue(getContext());
         String url = "http://socrip4.kaist.ac.kr:580/contact";
-        //HashMap<String, String> params = new HashMap<String, String>();
-        //params.put("token", "AbCdEfGh123456");
-
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,obj,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -305,7 +299,6 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "http://socrip4.kaist.ac.kr:580/contact/";
-        //Profile profile1;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -316,18 +309,13 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
                         String name_value = jo_inside.getString("name");
                         String phone_value = jo_inside.getString("phone");
                         //String id_value = jo_inside.getString("id"); //: use id to delete, modify
-                        //adapter.addItem(name_value, phone_value);
-                        //items.add(Integer.toString(i));
                         Profile profile1 = new Profile(name_value,phone_value,null,null);
                         _profiles_data.add(profile1);
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-
                 }
-                //Profile asd = new Profile("asd","asd","asd",null);
-                //_profiles_data.add(asd);
                 Collections.sort(_profiles_data, new CompareProfile());
                 _profiles_show.addAll(_profiles_data);
                 adapter.notifyDataSetChanged();

@@ -30,17 +30,15 @@ public class Full_Image extends AppCompatActivity {
         mAttacher.setMinimumScale(0);
         Intent i = getIntent();
         // Selected image id
-        int id=i.getExtras().getInt("position");
-        ArrayList<String> images=i.getExtras().getStringArrayList("array");
+        String id=i.getExtras().getString("position");
+        //ArrayList<String> images=i.getExtras().getStringArrayList("array");
 
-        Glide.with(this).load(images.get(id)).apply(new RequestOptions()
+        Glide.with(this).load(id).apply(new RequestOptions()
                 .placeholder(R.drawable.ic_launcher_foreground).fitCenter())
                 .into(imageView);
 
         imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
     }
-
-
 }
 
