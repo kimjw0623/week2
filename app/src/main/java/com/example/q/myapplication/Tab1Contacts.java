@@ -171,13 +171,6 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         }
     }*/
     public void post() {
-        /*
-        Gson gson = new Gson();
-        JsonObject object = new JsonObject();
-        for(int i=0;i<_profiles_data.size();i++){
-            object.addProperty("name",_profiles_data.get(i).getName());
-            object.addProperty("phone",_profiles_data.get(i).getPhone());
-        }*/
         JSONObject obj = new JSONObject();
         try {
             JSONArray jArray = new JSONArray();//배열이 필요할때
@@ -352,25 +345,4 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         }
         adapter.notifyDataSetChanged();
     }
-    /*
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (queue != null) {
-            queue.cancelAll(TAG);
-        }
-    }*/
-    /*
-    public void parseVolleyError(VolleyError error) {
-        try {
-            String responseBody = new String(error.networkResponse.data, "utf-8");
-            JSONObject data = new JSONObject(responseBody);
-            JSONArray errors = data.getJSONArray("errors");
-            JSONObject jsonMessage = errors.getJSONObject(0);
-            String message = jsonMessage.getString("message");
-            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-        } catch (JSONException e) {
-        } catch (UnsupportedEncodingException errorr) {
-        }
-    }*/
 }

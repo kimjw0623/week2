@@ -19,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,12 +70,18 @@ public class Tab2gallery extends Fragment {
     GridView gallery;
     ImageAdapter adapter;
     ArrayList<String> ids = new ArrayList<>();
+
+
+    private final int REQ_CODE_SELECT_IMAGE = 1001;
+    private String mImgPath = null;
+    private String mImgTitle = null;
+    private String mImgOrient = null;​
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab2gallery, container, false);
         gallery = view.findViewById(R.id.galleryView);
 
-        adapter= new ImageAdapter(getActivity(),ids);
+        adapter = new ImageAdapter(getActivity(), ids);
 
         FloatingActionButton btn_fab = view.findViewById(R.id.fab);
         gallery.setAdapter(adapter);
@@ -98,7 +105,7 @@ public class Tab2gallery extends Fragment {
 
                 }
             }
-        },new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
             }
@@ -106,7 +113,7 @@ public class Tab2gallery extends Fragment {
         stringRequest.setTag(TAG);
         queue.add(stringRequest);
         //////////////////////////////////////////////////
-        gallery.setOnItemClickListener(new OnItemClickListener(){
+        gallery.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
@@ -114,21 +121,23 @@ public class Tab2gallery extends Fragment {
                 Intent i = new Intent(getActivity().getApplicationContext(), Full_Image.class);
                 // passing array index
                 //i.putExtra("array",images);
-                i.putExtra("position", "http://socrip4.kaist.ac.kr:580/image/"+ids.get(position));
+                i.putExtra("position", "http://socrip4.kaist.ac.kr:580/image/" + ids.get(position));
                 startActivity(i);
             }
         });
 
-        gallery.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+        gallery.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
                 return false;
             }
         });
-        btn_fab.setOnClickListener(new View.OnClickListener(){
+
+        btn_fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+                /*
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (i.resolveActivity(getActivity().getPackageManager()) != null) {
                     String fileName = "temp.jpg";
@@ -141,15 +150,23 @@ public class Tab2gallery extends Fragment {
                     startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
                     adapter= new ImageAdapter(getActivity(),ids);
                     gallery.setAdapter(adapter);
+                }*//*
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");if (!TextUtils.isEmpty(imagePath)) {
+                    if (NetworkHelper.checkConnection(mContext)) { // 인터넷 연결 체크
+                        String ImageUploadURL = "http://socrip4.kaist.ac.kr:580/image/";
+                        new ImageUploadTask().execute(ImageUploadURL, imagePath);
+                    } else {
+                        Toast.makeText(mContext, "인터넷 연결을 확인하세요", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(mContext, "먼저 업로드할 파일을 선택하세요", Toast.LENGTH_SHORT).show();
                 }
+                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);​*/
             }
         });
-
         return view;
-
     }
-
-
     public class ImageAdapter extends BaseAdapter {
 
         /** The context. */
