@@ -10,4 +10,16 @@
         android:fontWeight="400"
         android:font="@font/dohyeon" />
 
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumSquareR" />
+
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/nanumSquareRoundR" />
+
 </font-family>

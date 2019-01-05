@@ -10,4 +10,10 @@
     <string name="search_hint">Search...</string>
     <string name="delete">×</string>
     <string name="pingpong">핑퐁\n게임</string>
+    <string name="facebook_app_id">295217014462902</string>
+    <string name="fb_login_protocol_scheme">fb295217014462902</string>
+    <string name="facebook_login">Log in with Facebook</string>
+    <string name="app_description">Synchronize your contact and gallery.</string>
+
+
 </resources>
