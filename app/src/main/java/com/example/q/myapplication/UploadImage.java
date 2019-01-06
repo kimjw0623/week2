@@ -4,6 +4,7 @@ package com.example.q.myapplication;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -92,8 +93,9 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
                 try {
                     //jsonObject.put(Utils.imageName, etxtUpload.getText().toString().trim());
                     jsonObject.put(Utils.imageList, jsonArray);
-                    Intent intent1 = getIntent();
-                    jsonObject.put("UID",intent1.getStringExtra("uid"));
+                    SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+                    String UID = prefs.getString("UID", null);
+                    jsonObject.put("UID",UID);
                 } catch (JSONException e) {
                     Log.e("JSONObject Here", e.toString());
                 }

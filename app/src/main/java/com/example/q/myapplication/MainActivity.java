@@ -2,6 +2,7 @@ package com.example.q.myapplication;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -41,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        UID = intent.getStringExtra(LoginActivity.EXTRA_MESSAGE);
+        SharedPreferences prefs = getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        UID = prefs.getString("UID", null);
+
         // Permission request  WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED

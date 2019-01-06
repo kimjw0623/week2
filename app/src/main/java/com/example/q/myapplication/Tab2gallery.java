@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -84,7 +85,11 @@ public class Tab2gallery extends Fragment {
         gallery.setAdapter(adapter);
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://socrip4.kaist.ac.kr:580/image/";
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        String UID = prefs.getString("UID", null);
+        String url = "http://socrip4.kaist.ac.kr:580/image/user/" + UID;
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

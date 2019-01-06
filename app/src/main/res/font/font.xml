@@ -14,12 +14,12 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/nanumSquareR" />
+        android:font="@font/nanumsquarer" />
 
 
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/nanumSquareRoundR" />
+        android:font="@font/nanumsquareroundr" />
 
 </font-family>

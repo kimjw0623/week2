@@ -1,6 +1,7 @@
 package com.example.q.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.q.myapplication.MESSAGE";
+    public static final String PREFS_NAME = "PrefsFile";
     CallbackManager callbackManager;
     LoginButton loginButton;
 
@@ -48,9 +49,14 @@ public class LoginActivity extends AppCompatActivity {
                 }).executeAsync();
 
                 Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_SHORT).show();
+
                 String UID = accessToken.getUserId();
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("UID", UID);
+                editor.commit();
+
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra(EXTRA_MESSAGE, UID);
                 startActivity(intent);
             }
 
