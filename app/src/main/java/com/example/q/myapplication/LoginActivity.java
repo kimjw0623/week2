@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -20,6 +21,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -34,6 +36,14 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
+        if (prefs.contains("Name") && prefs.contains("UID")) {
+            Button prevLoginButton = findViewById(R.id.prevUserLogin);
+            prevLoginButton.setText("Log in as " + prefs.getString("Name", null));
+            prevLoginButton.setVisibility(View.VISIBLE);
+        }
+
         callbackManager = CallbackManager.Factory.create();
         loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile");
@@ -50,10 +60,34 @@ public class LoginActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_SHORT).show();
 
-                String UID = accessToken.getUserId();
+                GraphRequest graphRequest = GraphRequest.newMeRequest(
+                        accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    String firstName = response.getJSONObject().getString("first_name");
+                                    String lastName = response.getJSONObject().getString("last_name");
+
+
+                                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                                    SharedPreferences.Editor editor = settings.edit();
+                                    editor.putString("Name", firstName + " " + lastName);
+                                    editor.commit();
+                                }
+                                catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                );
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,email,first_name,last_name,gender");
+                graphRequest.setParameters(parameters);
+                graphRequest.executeAsync();
+
                 SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("UID", UID);
+                editor.putString("UID", accessToken.getUserId());
                 editor.commit();
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -81,6 +115,10 @@ public class LoginActivity extends AppCompatActivity {
     public void onClick(View v) {
         if (v == findViewById(R.id.fb)) {
             loginButton.performClick();
+        }
+        if (v == findViewById(R.id.prevUserLogin)) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         }
     }
 }
