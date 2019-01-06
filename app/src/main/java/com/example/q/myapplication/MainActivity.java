@@ -1,6 +1,7 @@
 package com.example.q.myapplication;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private final int MY_PERMISSIONS_REQUEST = 100;
     private boolean isPermissionGranted = false;
+    private String UID;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        UID = intent.getStringExtra(LoginActivity.EXTRA_MESSAGE);
         // Permission request  WRITE_EXTERNAL_STORAGE
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
@@ -77,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+    }
+
+    public String getUID() {
+        return UID;
     }
 
     @Override

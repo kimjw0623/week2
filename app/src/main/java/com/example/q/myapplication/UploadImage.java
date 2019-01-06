@@ -92,6 +92,8 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
                 try {
                     //jsonObject.put(Utils.imageName, etxtUpload.getText().toString().trim());
                     jsonObject.put(Utils.imageList, jsonArray);
+                    Intent intent1 = getIntent();
+                    jsonObject.put("UID",intent1.getStringExtra("uid"));
                 } catch (JSONException e) {
                     Log.e("JSONObject Here", e.toString());
                 }
@@ -132,7 +134,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
                 String[] filePathColumn = { MediaStore.Images.Media.DATA };
                 imagesUriList = new ArrayList<Uri>();
                 encodedImageList.clear();
-                if(data.getData()!=null){
+                if(data.getData()!=null){//single image
 
                     Uri mImageUri=data.getData();
 
@@ -144,8 +146,13 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
 
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     imageURI  = cursor.getString(columnIndex);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+                    encodedImageList.add(encodedImage);
                     cursor.close();
-
+                    noImage.setText("Selected Images: " + 1);
                 }else {
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
