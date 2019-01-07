@@ -5,15 +5,41 @@ import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
+
+import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
     private GThread thread;
+    private Socket socket;
+    private GameObject playerA;
+    private GameObject playerB;
+    private SocketHelper socketHelper;
+
     public Tab3View(Context context){
         super(context);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
+
+        playerA = new GameObject(/*BITMAP FILE*/);
+        playerB = new GameObject(/*BITMAP FILE*/);
+
+        try {
+            String serverUrl = "http://socrip4.kaist.ac.kr:680/";
+            socketHelper = new SocketHelper(playerA, playerB);
+            socket = IO.socket(serverUrl);
+            socket.on("MOVE", socketHelper.onMoveReceived);
+            socket.on("STOP", socketHelper.onStopReceived);
+            socket.on("JUMP", socketHelper.onJumpReceived);
+            socket.on("FIRE", socketHelper.onFireReceived);
+            socket.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -40,12 +66,13 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         {
             if(c != null) getHolder().unlockCanvasAndPost(c);
         }
-        thread = new GThread();
+        thread = new GThread(getHolder(), this);
         thread.start();
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        socket.disconnect();
+        socket.close();
     }
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
