@@ -22,6 +22,14 @@ public class Tab3Game extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab3game, container, false);
+        Button button = (Button) rootView.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent data = new Intent(getActivity(),Game.class);
+                startActivity(data);
+            }
+        });
         return rootView;
     }
 }
