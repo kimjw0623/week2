@@ -7,6 +7,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -15,21 +16,25 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
     private GThread thread;
     private Socket socket;
-    private GameObject playerA;
-    private GameObject playerB;
     private SocketHelper socketHelper;
+
+    private int currentPlayer;
+    private PlayerObject playerA;
+    private PlayerObject playerB;
+    private ArrayList<BulletObject> bulletList;
 
     public Tab3View(Context context){
         super(context);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
 
-        playerA = new GameObject(/*BITMAP FILE*/);
-        playerB = new GameObject(/*BITMAP FILE*/);
+        playerA = new PlayerObject(/*BITMAP FILE*/);
+        playerB = new PlayerObject(/*BITMAP FILE*/);
+        bulletList.clear();
 
         try {
             String serverUrl = "http://socrip4.kaist.ac.kr:680/";
-            socketHelper = new SocketHelper(playerA, playerB);
+            socketHelper = new SocketHelper(this);
             socket = IO.socket(serverUrl);
             socket.on("MOVE", socketHelper.onMoveReceived);
             socket.on("STOP", socketHelper.onStopReceived);
@@ -39,6 +44,9 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    public void update() {
 
     }
 
@@ -88,4 +96,15 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         }
         return true;
     }
+
+    public void removeBullet(BulletObject bullet) {
+        bulletList.remove(bullet);
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+    public PlayerObject getPlayerA() {return playerA;}
+    public PlayerObject getPlayerB() {return playerB;}
+    public ArrayList<BulletObject> getBulletList() {return bulletList;}
 }
