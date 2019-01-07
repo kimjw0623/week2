@@ -1,5 +1,6 @@
 package com.example.q.myapplication;
 
+import android.graphics.BitmapFactory;
 import android.support.design.widget.TabLayout;
 
 import org.json.JSONException;
@@ -96,21 +97,23 @@ public class SocketHelper {
                 JSONObject receivedData = (JSONObject) args[0];
                 int playerId = receivedData.getInt("playerId");
 
-                BulletObject bullet = new BulletObject(/*BITMAP IMAGE*/, view);
 
                 if (playerId == 0) {
-                    bullet.setDir(playerA.getDir());
+                    BulletObject bullet = new BulletObject(BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_left),
+                            BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_right), view, playerId, playerA.getDir());
                     bullet.setXY(playerA.x, playerA.y + playerA.getDir()*playerA.getHeight()/2);
+                    bulletList.add(bullet);
                 }
                 else if (playerId == 1) {
-                    bullet.setDir(playerB.getDir());
+                    BulletObject bullet = new BulletObject(BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_left),
+                            BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_right),view, playerId, playerB.getDir());
                     bullet.setXY(playerB.x, playerB.y + playerB.getDir()*playerB.getHeight()/2);
+                    bulletList.add(bullet);
                 }
                 else {
                     throw new JSONException("playerId Error");
                 }
 
-                bulletList.add(bullet);
 
             } catch (JSONException e) {
                 e.printStackTrace();

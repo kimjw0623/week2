@@ -3,23 +3,22 @@ package com.example.q.myapplication;
 import android.graphics.Bitmap;
 
 public class BulletObject extends GameObject {
-    private int vY = 50;
+    private int vX = 50;
     private Tab3View view;
+    private int ownPlayer;
 
-    public BulletObject(Bitmap bitmap, Tab3View tab3View) {
-        super(bitmap);
+    public BulletObject(Bitmap bitmapLeft, Bitmap bitmapRight, Tab3View tab3View, int player, int dir) {
+        super(bitmapLeft, bitmapRight);
         view = tab3View;
+        ownPlayer = player;
+        direction = dir;
     }
 
     @Override
     public void update() {
-        y += vY;
-        if (y >= screenHeight || y <= 0) {
+        x += direction*vX;
+        if (x >= screenWidth || x <= 0) {
             view.removeBullet(this);
         }
-    }
-
-    public void setDir(int direction) {
-        vY *= direction;
     }
 }
