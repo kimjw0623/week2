@@ -1,7 +1,6 @@
 package com.example.q.myapplication;
 
 import android.graphics.BitmapFactory;
-import android.support.design.widget.TabLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;

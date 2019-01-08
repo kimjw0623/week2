@@ -114,7 +114,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         if(playerA.getHp()<=0){
             isEnd = 1;
         }
-        if(playerA.getHp()<=0){
+        if(playerB.getHp()<=0){
             isEnd = 2;
         }
     }
