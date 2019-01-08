@@ -16,14 +16,16 @@ public class SocketHelper {
     private Socket socket;
     private PlayerObject playerA;
     private PlayerObject playerB;
-    private ArrayList<BulletObject> bulletList;
+    private ArrayList<BulletObject> bulletListA;
+    private ArrayList<BulletObject> bulletListB;
 
     public SocketHelper(Tab3View tab3View) {
         this.view = tab3View;
         this.socket = view.getSocket();
         this.playerA = view.getPlayerA();
         this.playerB = view.getPlayerB();
-        this.bulletList = view.getBulletList();
+        this.bulletListA = view.getBulletListA();
+        this.bulletListB = view.getBulletListB();
     }
 
     public Emitter.Listener onMoveReceived = new Emitter.Listener() {
@@ -102,13 +104,13 @@ public class SocketHelper {
                     BulletObject bullet = new BulletObject(BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_left),
                             BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_right), view, playerId, playerA.getDir());
                     bullet.setXY(playerA.x + playerA.getDir()*playerA.getWidth()/2, playerA.y+50);
-                    bulletList.add(bullet);
+                    bulletListA.add(bullet);
                 }
                 else if (playerId == 1) {
                     BulletObject bullet = new BulletObject(BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_left),
                             BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_right),view, playerId, playerB.getDir());
                     bullet.setXY(playerB.x+ playerB.getDir()*playerB.getWidth()/2, playerB.y+50 );
-                    bulletList.add(bullet);
+                    bulletListB.add(bullet);
                 }
                 else {
                     throw new JSONException("playerId Error");

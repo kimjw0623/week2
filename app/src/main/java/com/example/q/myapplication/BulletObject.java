@@ -18,7 +18,8 @@ public class BulletObject extends GameObject {
     public void update() {
         x += direction*vX;
         if (x >= screenWidth || x <= 0) {
-            view.removeBullet(this);
+            view.removeABullet(this);
+            view.removeBBullet(this);
         }
     }
 }
