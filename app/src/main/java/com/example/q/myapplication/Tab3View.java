@@ -27,7 +27,8 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     private int currentPlayer;
     private PlayerObject playerA;
     private PlayerObject playerB;
-    private ArrayList<BulletObject> bulletList;
+    private ArrayList<BulletObject> bulletListA;
+    private ArrayList<BulletObject> bulletListB;
     private Bitmap background;
 
     private ButtonObject buttonLeft;
@@ -57,7 +58,8 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                                     BitmapFactory.decodeResource(getResources(),R.drawable.player_right));
         playerB = new PlayerObject(this, BitmapFactory.decodeResource(getResources(),R.drawable.player_left),
                                     BitmapFactory.decodeResource(getResources(),R.drawable.player_right));
-        bulletList = new ArrayList<>();
+        bulletListA = new ArrayList<>();
+        bulletListB = new ArrayList<>();
 
         playerA.setXY(200, 850 - playerA.getHeight()/2);
         playerA.setDir(1);
@@ -95,21 +97,24 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
         playerA.update();
         playerB.update();
-        for (int i = 0 ; i < bulletList.size(); i++) {
-            bulletList.get(i).update();
+        for (int i = 0 ; i < bulletListA.size(); i++) {
+            bulletListA.get(i).update();
+        }
+        for (int i = 0 ; i < bulletListB.size(); i++) {
+            bulletListB.get(i).update();
         }
         //when attacked
-        for(int i = 0 ; i < bulletList.size(); i++){
-            if(Math.abs(playerA.getX()-bulletList.get(i).getX())<39&&
-                    Math.abs(playerA.getY()-bulletList.get(i).getY())<43){
-                bulletList.remove(i);
+        for(int i = 0 ; i < bulletListB.size(); i++){
+            if(Math.abs(playerA.getX()-bulletListB.get(i).getX())<39&&
+                    Math.abs(playerA.getY()-bulletListB.get(i).getY())<43){
+                bulletListB.remove(i);
                 playerA.attacked();
             }
         }
-        for(int i = 0 ; i < bulletList.size(); i++){
-            if(Math.abs(playerB.getX()-bulletList.get(i).getX())<39&&
-                    Math.abs(playerB.getY()-bulletList.get(i).getY())<43){
-                bulletList.remove(i);
+        for(int i = 0 ; i < bulletListA.size(); i++){
+            if(Math.abs(playerB.getX()-bulletListA.get(i).getX())<39&&
+                    Math.abs(playerB.getY()-bulletListA.get(i).getY())<43){
+                bulletListA.remove(i);
                 playerB.attacked();
             }
         }////bullet must have id
@@ -138,8 +143,11 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
                 playerB.draw(canvas);
 
-                for (int i = 0; i < bulletList.size(); i++) {
-                    bulletList.get(i).draw(canvas);
+                for (int i = 0; i < bulletListA.size(); i++) {
+                    bulletListA.get(i).draw(canvas);
+                }
+                for (int i = 0; i < bulletListB.size(); i++) {
+                    bulletListB.get(i).draw(canvas);
                 }
                 buttonLeft.draw(canvas);
                 buttonRight.draw(canvas);
@@ -238,8 +246,8 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    public void removeBullet(BulletObject bullet) {
-        bulletList.remove(bullet);
+    public void removeABullet(BulletObject bullet) {
+        bulletListA.remove(bullet);
     }
 
     public Socket getSocket() {
@@ -247,5 +255,6 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     }
     public PlayerObject getPlayerA() {return playerA;}
     public PlayerObject getPlayerB() {return playerB;}
-    public ArrayList<BulletObject> getBulletList() {return bulletList;}
+    public ArrayList<BulletObject> getBulletListA() {return bulletListA;}
+    public ArrayList<BulletObject> getBulletListB() {return bulletListB;}
 }
