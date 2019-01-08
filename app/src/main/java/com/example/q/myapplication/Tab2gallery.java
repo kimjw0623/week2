@@ -146,7 +146,7 @@ public class Tab2gallery extends Fragment {
                     ContentValues values = new ContentValues();
                     values.put(MediaStore.Images.Media.TITLE, fileName);
                     uri = getActivity().getContentResolver()
-                                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                                         values);
                     i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     startActivityForResult(i, REQUEST_IMAGE_CAPTURE);

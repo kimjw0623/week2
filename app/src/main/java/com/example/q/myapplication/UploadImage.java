@@ -53,7 +53,7 @@ public class UploadImage extends AppCompatActivity implements View.OnClickListen
         btnselectpic = (Button)findViewById(R.id.button_selectpic);
         messageText  = (TextView)findViewById(R.id.messageText);
         noImage  = (TextView)findViewById(R.id.noImage);
-        etxtUpload = (EditText)findViewById(R.id.etxtUpload);
+        //etxtUpload = (EditText)findViewById(R.id.etxtUpload);
 
         btnselectpic.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
