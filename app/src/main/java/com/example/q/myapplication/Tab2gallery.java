@@ -123,7 +123,7 @@ public class Tab2gallery extends Fragment {
                 Intent i = new Intent(getActivity().getApplicationContext(), Full_Image.class);
                 // passing array index
                 //i.putExtra("array",images);
-                i.putExtra("position", "http://socrip4.kaist.ac.kr:580/image/" + ids.get(position));
+                i.putExtra("position", "http://socrip4.kaist.ac.kr:680/image/" + ids.get(position));
                 startActivity(i);
             }
         });

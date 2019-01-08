@@ -41,7 +41,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint;
     private int isEnd;
-    private int cool=30;
+    private int cool=15;
 
     public Tab3View(Context context){
         super(context);
@@ -119,7 +119,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
             isEnd = 2;
         }
         if(cool==0){
-            cool=30;
+            cool=15;
         }
         if(cool!=1){
             cool-=1;
