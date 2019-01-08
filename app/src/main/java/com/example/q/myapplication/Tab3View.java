@@ -41,6 +41,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
     private Paint paint;
     private int isEnd;
+    private int cool=30;
 
     public Tab3View(Context context){
         super(context);
@@ -67,7 +68,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
         playerA.setXY(200, 850 - playerA.getHeight()/2);
         playerA.setDir(1);
-        playerB.setXY(1000, 850 - playerB.getHeight()/2);
+        playerB.setXY(screenWidth-200, 850 - playerB.getHeight()/2);
         playerB.setDir(-1);
 
         socketHelper = new SocketHelper(this);
@@ -117,6 +118,12 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         if(playerB.getHp()<=0){
             isEnd = 2;
         }
+        if(cool==0){
+            cool=30;
+        }
+        if(cool!=1){
+            cool-=1;
+        }
     }
 
     @Override
@@ -125,10 +132,17 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         if (canvas != null) {
             if(isEnd==1){
                 //A win
-
+                paint.setColor(Color.WHITE);
+                paint.setTextSize(200);
+                canvas.drawText("PLAYER A win!",
+                        screenWidth/2-650, screenHeight/2, paint);
             }
             else if(isEnd==2){
                 //B win
+                paint.setColor(Color.WHITE);
+                paint.setTextSize(200);
+                canvas.drawText("PLAYER B win!",
+                        screenWidth/2-650, screenHeight/2, paint);
             }
             else {
                 canvas.drawBitmap(background, 0, 0, null);
@@ -214,7 +228,10 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                     }
                     if (buttonFire.isInside(eventX, eventY)) {
                         //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
-                        socketHelper.sendFire(currentPlayer);
+                        if(cool==1) {
+                            socketHelper.sendFire(currentPlayer);
+                            cool-=1;
+                        }
                     }
                     if (buttonJump.isInside(eventX, eventY)) {
                         //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
