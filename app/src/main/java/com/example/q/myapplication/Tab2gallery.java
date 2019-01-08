@@ -139,7 +139,7 @@ public class Tab2gallery extends Fragment {
         btn_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (i.resolveActivity(getActivity().getPackageManager()) != null) {
                     String fileName = "temp.jpg";
@@ -152,7 +152,7 @@ public class Tab2gallery extends Fragment {
                     startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
                     adapter= new ImageAdapter(getActivity(),ids);
                     gallery.setAdapter(adapter);
-                }*//*
+                }/*
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");if (!TextUtils.isEmpty(imagePath)) {
                     if (NetworkHelper.checkConnection(mContext)) { // 인터넷 연결 체크
