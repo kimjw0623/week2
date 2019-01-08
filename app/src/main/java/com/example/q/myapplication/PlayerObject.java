@@ -62,9 +62,6 @@ public class PlayerObject extends GameObject {
             System.out.println(vY);
             y += vY;
             vY += JUMP_ACCELERATION;
-            if (vY > -JUMP_VELOCITY) {
-                isJump = false;
-            }
         }
         x += direction*vX;
 
@@ -73,6 +70,7 @@ public class PlayerObject extends GameObject {
         }
         else if (y >  850 - getHeight()/2) {
             y = 850 - getHeight()/2;
+            isJump = false;
         }
 
         if (x < 0) {
