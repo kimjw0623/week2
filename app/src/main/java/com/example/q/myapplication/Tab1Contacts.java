@@ -3,6 +3,7 @@ package com.example.q.myapplication;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -182,6 +183,9 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
                 jArray.put(sObject);
             }
             obj.put("list",jArray);//배열을 넣음
+            SharedPreferences prefs = getActivity().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+            String UID = prefs.getString("UID", null);
+            obj.put("UID",UID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -291,7 +295,9 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         }
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://socrip4.kaist.ac.kr:680/contact/";
+        SharedPreferences prefs = getActivity().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
+        String UID = prefs.getString("UID", null);
+        String url = "http://socrip4.kaist.ac.kr:680/contact/user/"+UID;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
