@@ -88,7 +88,7 @@ public class Tab2gallery extends Fragment {
 
         SharedPreferences prefs = getActivity().getSharedPreferences(LoginActivity.PREFS_NAME, 0);
         String UID = prefs.getString("UID", null);
-        String url = "http://socrip4.kaist.ac.kr:580/image/user/" + UID;
+        String url = "http://socrip4.kaist.ac.kr:680/image/user/" + UID;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -214,7 +214,7 @@ public class Tab2gallery extends Fragment {
                 picturesView = (ImageView) convertView;
             }
 
-            Glide.with(context).load("http://socrip4.kaist.ac.kr:580/image/"+ids.get(position)).thumbnail(0.1f).apply(new RequestOptions()
+            Glide.with(context).load("http://socrip4.kaist.ac.kr:680/image/"+ids.get(position)).thumbnail(0.1f).apply(new RequestOptions()
                     .placeholder(R.drawable.ic_launcher_foreground).centerCrop())
                     .into(picturesView);
 

@@ -187,7 +187,7 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         }
 
         RequestQueue RequestQueue = Volley.newRequestQueue(getContext());
-        String url = "http://socrip4.kaist.ac.kr:580/contact";
+        String url = "http://socrip4.kaist.ac.kr:680/contact";
         JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url,obj,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -291,7 +291,7 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         }
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "http://socrip4.kaist.ac.kr:580/contact/";
+        String url = "http://socrip4.kaist.ac.kr:680/contact/";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
