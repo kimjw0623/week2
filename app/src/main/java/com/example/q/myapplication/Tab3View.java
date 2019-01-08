@@ -96,15 +96,17 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         }
         //when attacked
         for(int i = 0 ; i < bulletListB.size(); i++){
-            if(Math.abs(playerA.getX()-bulletListB.get(i).getX())<39&&
-                    Math.abs(playerA.getY()-bulletListB.get(i).getY())<43){
+            BulletObject temp = bulletListB.get(i);
+            if(Math.abs(playerA.getX()-temp.getX()) < (playerA.getWidth()/2 + temp.getWidth()/2) &&
+                    Math.abs(playerA.getY()-temp.getY()) < (playerA.getHeight()/2 + temp.getHeight()/2)){
                 bulletListB.remove(i);
                 playerA.attacked();
             }
         }
         for(int i = 0 ; i < bulletListA.size(); i++){
-            if(Math.abs(playerB.getX()-bulletListA.get(i).getX())<39&&
-                    Math.abs(playerB.getY()-bulletListA.get(i).getY())<43){
+            BulletObject temp = bulletListA.get(i);
+            if(Math.abs(playerB.getX()-temp.getX()) < (playerB.getWidth()/2 + temp.getWidth()/2) &&
+                    Math.abs(playerB.getY()-temp.getY()) < (playerB.getHeight()/2 + temp.getHeight()/2)){
                 bulletListA.remove(i);
                 playerB.attacked();
             }
