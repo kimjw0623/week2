@@ -3,7 +3,7 @@ package com.example.q.myapplication;
 import android.graphics.Bitmap;
 
 public class BulletObject extends GameObject {
-    private int vX = 50;
+    private int vX = 25;
     private Tab3View view;
     private int ownPlayer;
 
