@@ -46,24 +46,24 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
         background = Bitmap.createScaledBitmap(background, screenWidth, screenHeight, true);
 
-        playerA = new PlayerObject(BitmapFactory.decodeResource(getResources(),R.drawable.player_left),
+        playerA = new PlayerObject(this, BitmapFactory.decodeResource(getResources(),R.drawable.player_left),
                                     BitmapFactory.decodeResource(getResources(),R.drawable.player_right));
-        playerB = new PlayerObject(BitmapFactory.decodeResource(getResources(),R.drawable.player_left),
+        playerB = new PlayerObject(this, BitmapFactory.decodeResource(getResources(),R.drawable.player_left),
                                     BitmapFactory.decodeResource(getResources(),R.drawable.player_right));
         bulletList = new ArrayList<>();
 
-        playerA.setXY(200, 1140 - playerA.getHeight()/2);
+        playerA.setXY(200, 850 - playerA.getHeight()/2);
         playerA.setDir(1);
-        playerB.setXY(1000, 1140 - playerB.getHeight()/2);
+        playerB.setXY(1000, 850 - playerB.getHeight()/2);
         playerB.setDir(-1);
 
 
         currentPlayer = 0;
 
         try {
-            String serverUrl = "http://socrip4.kaist.ac.kr:680/";
-            socketHelper = new SocketHelper(this);
+            String serverUrl = "http://socrip4.kaist.ac.kr:580/";
             socket = IO.socket(serverUrl);
+            socketHelper = new SocketHelper(this);
             socket.on("MOVE", socketHelper.onMoveReceived);
             socket.on("STOP", socketHelper.onStopReceived);
             socket.on("JUMP", socketHelper.onJumpReceived);
@@ -71,13 +71,13 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
             socket.connect();
 
             buttonLeft = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_left));
-            buttonLeft.setXY(200, 1300);
+            buttonLeft.setXY(200, 970);
             buttonRight = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_right));
-            buttonRight.setXY(500, 1300);
+            buttonRight.setXY(500, 970);
             buttonJump = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
-            buttonJump.setXY(screenWidth-450, 1300);
+            buttonJump.setXY(screenWidth-450, 970);
             buttonFire = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
-            buttonFire.setXY(screenWidth-200, 1300);
+            buttonFire.setXY(screenWidth-200, 970);
             Toast.makeText(getContext(), "Server connected", Toast.LENGTH_SHORT).show();
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -148,15 +148,19 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                     eventX = (int)event.getX(i);
                     eventY = (int)event.getY(i);
                     if (buttonLeft.isInside(eventX, eventY)) {
+                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendMove(currentPlayer, -1);
                     }
                     if (buttonRight.isInside(eventX, eventY)) {
+                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendMove(currentPlayer, 1);
                     }
                     if (buttonFire.isInside(eventX, eventY)) {
+                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendFire(currentPlayer);
                     }
                     if (buttonJump.isInside(eventX, eventY)) {
+                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendJump(currentPlayer);
                     }
 

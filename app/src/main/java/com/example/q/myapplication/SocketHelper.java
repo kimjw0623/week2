@@ -101,13 +101,13 @@ public class SocketHelper {
                 if (playerId == 0) {
                     BulletObject bullet = new BulletObject(BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_left),
                             BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_right), view, playerId, playerA.getDir());
-                    bullet.setXY(playerA.x, playerA.y + playerA.getDir()*playerA.getHeight()/2);
+                    bullet.setXY(playerA.x + playerA.getDir()*playerA.getWidth()/2, playerA.y+50);
                     bulletList.add(bullet);
                 }
                 else if (playerId == 1) {
                     BulletObject bullet = new BulletObject(BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_left),
                             BitmapFactory.decodeResource(view.getResources(),R.drawable.bullet_right),view, playerId, playerB.getDir());
-                    bullet.setXY(playerB.x, playerB.y + playerB.getDir()*playerB.getHeight()/2);
+                    bullet.setXY(playerB.x+ playerB.getDir()*playerB.getWidth()/2, playerB.y+50 );
                     bulletList.add(bullet);
                 }
                 else {
