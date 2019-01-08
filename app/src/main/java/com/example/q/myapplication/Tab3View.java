@@ -5,6 +5,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,6 +38,8 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     private int screenHeight;
     private int screenWidth;
 
+    private Paint paint;
+
     public Tab3View(Context context){
         super(context);
         SurfaceHolder holder = getHolder();
@@ -52,7 +56,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                                     BitmapFactory.decodeResource(getResources(),R.drawable.player_right));
         bulletList = new ArrayList<>();
 
-        playerA.setXY(200, 850 - playerA.getHeight()/2);
+        playerA.setXY(200, 1000 - playerA.getHeight()/2);
         playerA.setDir(1);
         playerB.setXY(1000, 850 - playerB.getHeight()/2);
         playerB.setDir(-1);
@@ -91,6 +95,27 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         for (int i = 0 ; i < bulletList.size(); i++) {
             bulletList.get(i).update();
         }
+        //when attacked
+        for(int i = 0 ; i < bulletList.size(); i++){
+            if(Math.abs(playerA.getX()-bulletList.get(i).getX())<39&&
+                    Math.abs(playerA.getY()-bulletList.get(i).getY())<43){
+                bulletList.remove(i);
+                playerA.attacked();
+            }
+        }
+        for(int i = 0 ; i < bulletList.size(); i++){
+            if(Math.abs(playerB.getX()-bulletList.get(i).getX())<39&&
+                    Math.abs(playerB.getY()-bulletList.get(i).getY())<43){
+                bulletList.remove(i);
+                playerB.attacked();
+            }
+        }////bullet must have id
+        if(playerA.getHp()<=0){
+            //Die
+        }
+        if(playerA.getHp()<=0){
+            //Die
+        }
     }
 
     @Override
@@ -99,7 +124,9 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         if (canvas != null) {
             canvas.drawBitmap(background, 0, 0, null);
             playerA.draw(canvas);
+
             playerB.draw(canvas);
+
             for (int i = 0 ; i < bulletList.size(); i++) {
                 bulletList.get(i).draw(canvas);
             }
@@ -107,6 +134,13 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
             buttonRight.draw(canvas);
             buttonJump.draw(canvas);
             buttonFire.draw(canvas);
+
+            paint.setColor(Color.BLACK);
+            canvas.drawRect(playerA.getX()-playerA.getWidth()/2,playerA.getY()-playerA.getWidth()/2-5,
+                            playerA.getX()+playerA.getWidth()/2,playerA.getY()-playerA.getWidth()/2-25,paint);
+            paint.setColor(Color.RED);
+            canvas.drawRect(playerA.getX()-playerA.getWidth()/2,playerA.getY()-playerA.getWidth()/2-5,
+                    playerA.getX()-playerA.getWidth()/2+(playerA.getWidth()*(playerA.getHp()/100)),playerA.getY()-playerA.getWidth()/2-25,paint);
         }
 
     }
@@ -148,19 +182,19 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                     eventX = (int)event.getX(i);
                     eventY = (int)event.getY(i);
                     if (buttonLeft.isInside(eventX, eventY)) {
-                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendMove(currentPlayer, -1);
                     }
                     if (buttonRight.isInside(eventX, eventY)) {
-                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendMove(currentPlayer, 1);
                     }
                     if (buttonFire.isInside(eventX, eventY)) {
-                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendFire(currentPlayer);
                     }
                     if (buttonJump.isInside(eventX, eventY)) {
-                        Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendJump(currentPlayer);
                     }
 

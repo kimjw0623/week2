@@ -11,6 +11,8 @@ public class PlayerObject extends GameObject {
     private final int INIT_VELOCITY = 40;
     private final int JUMP_VELOCITY = -210;
     private final int JUMP_ACCELERATION = 70;
+    protected int hp = 100;//toDo
+
 
     private Bitmap imageLeft2;
     private Bitmap imageLeft3;
@@ -99,5 +101,13 @@ public class PlayerObject extends GameObject {
 
     public int getDir() {
         return direction;
+    }
+
+    public void attacked() {
+        hp -= 10;
+    }
+
+    public int getHp(){
+        return hp;
     }
 }
