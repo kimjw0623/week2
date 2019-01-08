@@ -14,6 +14,10 @@
     <string name="fb_login_protocol_scheme">fb295217014462902</string>
     <string name="facebook_login">Log in with Facebook</string>
     <string name="app_description">Synchronize your contact and gallery.</string>
+    <string name="new_game">CREATE GAME</string>
+    <string name="enter_game">ENTER GAME</string>
+    <string name="type_game_num">Type number</string>
+    <string name="refresh_server">Refresh server connection</string>
 
 
 </resources>

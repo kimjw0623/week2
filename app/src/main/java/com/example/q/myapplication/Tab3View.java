@@ -44,6 +44,10 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
+
+        socket = GameDataHandler.getSocket();
+        currentPlayer = GameDataHandler.getPlayerId();
+
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
@@ -61,32 +65,21 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         playerB.setXY(1000, 850 - playerB.getHeight()/2);
         playerB.setDir(-1);
 
+        paint = new Paint();
 
-        currentPlayer = 0;
-
-        try {
-            String serverUrl = "http://socrip4.kaist.ac.kr:580/";
-            socket = IO.socket(serverUrl);
-            socketHelper = new SocketHelper(this);
-            socket.on("MOVE", socketHelper.onMoveReceived);
-            socket.on("STOP", socketHelper.onStopReceived);
-            socket.on("JUMP", socketHelper.onJumpReceived);
-            socket.on("FIRE", socketHelper.onFireReceived);
-            socket.connect();
-
-            buttonLeft = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_left));
-            buttonLeft.setXY(200, 970);
-            buttonRight = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_right));
-            buttonRight.setXY(500, 970);
-            buttonJump = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
-            buttonJump.setXY(screenWidth-450, 970);
-            buttonFire = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
-            buttonFire.setXY(screenWidth-200, 970);
-            Toast.makeText(getContext(), "Server connected", Toast.LENGTH_SHORT).show();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            Toast.makeText(getContext(), "Server failure", Toast.LENGTH_SHORT).show();
-        }
+        socketHelper = new SocketHelper(this);
+        socket.on("MOVE", socketHelper.onMoveReceived);
+        socket.on("STOP", socketHelper.onStopReceived);
+        socket.on("JUMP", socketHelper.onJumpReceived);
+        socket.on("FIRE", socketHelper.onFireReceived);
+        buttonLeft = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_left));
+        buttonLeft.setXY(200, 970);
+        buttonRight = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_right));
+        buttonRight.setXY(500, 970);
+        buttonJump = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
+        buttonJump.setXY(screenWidth-450, 970);
+        buttonFire = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
+        buttonFire.setXY(screenWidth-200, 970);
     }
 
     public void update() {
@@ -156,6 +149,10 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         socket.disconnect();
+        socket.off("MOVE", socketHelper.onMoveReceived);
+        socket.off("STOP", socketHelper.onStopReceived);
+        socket.off("JUMP", socketHelper.onJumpReceived);
+        socket.off("FIRE", socketHelper.onFireReceived);
         socket.close();
         boolean retry = true;
         while (retry) {

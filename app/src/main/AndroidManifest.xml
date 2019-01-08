@@ -62,7 +62,6 @@
         </activity>
         <activity android:name=".Game"
             android:screenOrientation="landscape">
-
         </activity>
     </application>
 
