@@ -39,11 +39,14 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     private int screenWidth;
 
     private Paint paint;
+    private int isEnd;
 
     public Tab3View(Context context){
         super(context);
         SurfaceHolder holder = getHolder();
         holder.addCallback(this);
+        paint = new Paint();
+        isEnd = 0;
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
@@ -56,7 +59,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                                     BitmapFactory.decodeResource(getResources(),R.drawable.player_right));
         bulletList = new ArrayList<>();
 
-        playerA.setXY(200, 1000 - playerA.getHeight()/2);
+        playerA.setXY(200, 850 - playerA.getHeight()/2);
         playerA.setDir(1);
         playerB.setXY(1000, 850 - playerB.getHeight()/2);
         playerB.setDir(-1);
@@ -111,10 +114,10 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
             }
         }////bullet must have id
         if(playerA.getHp()<=0){
-            //Die
+            isEnd = 1;
         }
         if(playerA.getHp()<=0){
-            //Die
+            isEnd = 2;
         }
     }
 
@@ -122,27 +125,42 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if (canvas != null) {
-            canvas.drawBitmap(background, 0, 0, null);
-            playerA.draw(canvas);
+            if(isEnd==1){
+                //A win
 
-            playerB.draw(canvas);
-
-            for (int i = 0 ; i < bulletList.size(); i++) {
-                bulletList.get(i).draw(canvas);
             }
-            buttonLeft.draw(canvas);
-            buttonRight.draw(canvas);
-            buttonJump.draw(canvas);
-            buttonFire.draw(canvas);
+            else if(isEnd==2){
+                //B win
+            }
+            else {
+                canvas.drawBitmap(background, 0, 0, null);
+                playerA.draw(canvas);
 
-            paint.setColor(Color.BLACK);
-            canvas.drawRect(playerA.getX()-playerA.getWidth()/2,playerA.getY()-playerA.getWidth()/2-5,
-                            playerA.getX()+playerA.getWidth()/2,playerA.getY()-playerA.getWidth()/2-25,paint);
-            paint.setColor(Color.RED);
-            canvas.drawRect(playerA.getX()-playerA.getWidth()/2,playerA.getY()-playerA.getWidth()/2-5,
-                    playerA.getX()-playerA.getWidth()/2+(playerA.getWidth()*(playerA.getHp()/100)),playerA.getY()-playerA.getWidth()/2-25,paint);
+                playerB.draw(canvas);
+
+                for (int i = 0; i < bulletList.size(); i++) {
+                    bulletList.get(i).draw(canvas);
+                }
+                buttonLeft.draw(canvas);
+                buttonRight.draw(canvas);
+                buttonJump.draw(canvas);
+                buttonFire.draw(canvas);
+
+                paint.setColor(Color.BLACK);
+                canvas.drawRect(playerA.getX() - playerA.getWidth() / 2, playerA.getY() - playerA.getWidth() / 2 - 25,
+                        playerA.getX() + playerA.getWidth() / 2, playerA.getY() - playerA.getWidth() / 2 - 40, paint);
+                paint.setColor(Color.RED);
+                canvas.drawRect(playerA.getX() - playerA.getWidth() / 2, playerA.getY() - playerA.getWidth() / 2 - 25,
+                        playerA.getX() - playerA.getWidth() / 2 + (playerA.getWidth()*(playerA.getHp()))/100, playerA.getY() - playerA.getWidth() / 2 - 40, paint);
+                paint.setColor(Color.BLACK);
+                canvas.drawRect(playerB.getX() - playerB.getWidth() / 2, playerB.getY() - playerB.getWidth() / 2 - 25,
+                        playerB.getX() + playerB.getWidth() / 2, playerB.getY() - playerB.getWidth() / 2 - 40, paint);
+                paint.setColor(Color.RED);
+                canvas.drawRect(playerB.getX() - playerB.getWidth() / 2, playerB.getY() - playerB.getWidth() / 2 - 25,
+                        playerB.getX() - playerB.getWidth() / 2 + (playerB.getWidth()*(playerB.getHp()))/100, playerB.getY() - playerB.getWidth() / 2 - 40, paint);
+
+            }
         }
-
     }
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
