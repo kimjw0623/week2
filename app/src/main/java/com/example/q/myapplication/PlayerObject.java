@@ -8,9 +8,9 @@ import android.graphics.Canvas;
 public class PlayerObject extends GameObject {
     protected int vX, vY;
     protected boolean isJump;
-    private final int INIT_VELOCITY = 40;
-    private final int JUMP_VELOCITY = -180;
-    private final int JUMP_ACCELERATION = 45;
+    private final int INIT_VELOCITY = 20;
+    private final int JUMP_VELOCITY = -110;
+    private final int JUMP_ACCELERATION = 22;
     protected int hp = 100;//toDo
 
 

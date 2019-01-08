@@ -36,6 +36,9 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     private ButtonObject buttonJump;
     private ButtonObject buttonFire;
 
+    private int pointerLeft;
+    private int pointerRight;
+
     private int screenHeight;
     private int screenWidth;
 
@@ -76,13 +79,13 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
         socket.on("STOP", socketHelper.onStopReceived);
         socket.on("JUMP", socketHelper.onJumpReceived);
         socket.on("FIRE", socketHelper.onFireReceived);
-        buttonLeft = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_left));
+        buttonLeft = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.left));
         buttonLeft.setXY(200, 970);
-        buttonRight = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.icon_right));
+        buttonRight = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.right));
         buttonRight.setXY(500, 970);
-        buttonJump = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
+        buttonJump = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.jump));
         buttonJump.setXY(screenWidth-450, 970);
-        buttonFire = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.circle));
+        buttonFire = new ButtonObject(BitmapFactory.decodeResource(getResources(), R.drawable.fire));
         buttonFire.setXY(screenWidth-200, 970);
     }
 
@@ -170,7 +173,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                 paint.setColor(Color.BLACK);
                 canvas.drawRect(playerB.getX() - playerB.getWidth() / 2, playerB.getY() - playerB.getWidth() / 2 - 25,
                         playerB.getX() + playerB.getWidth() / 2, playerB.getY() - playerB.getWidth() / 2 - 40, paint);
-                paint.setColor(Color.RED);
+                paint.setARGB(255, 255, 0, 128);
                 canvas.drawRect(playerB.getX() - playerB.getWidth() / 2, playerB.getY() - playerB.getWidth() / 2 - 25,
                         playerB.getX() - playerB.getWidth() / 2 + (playerB.getWidth()*(playerB.getHp()))/100, playerB.getY() - playerB.getWidth() / 2 - 40, paint);
 
@@ -207,7 +210,7 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
     }
     public boolean onTouchEvent(MotionEvent event) {
         int pointer_count = event.getPointerCount();
-        pointer_count = pointer_count > 2 ? 2 : pointer_count;
+        pointer_count = pointer_count > 3 ? 3 : pointer_count;
 
         int eventX, eventY;
         int action = event.getActionMasked();
@@ -221,10 +224,12 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                     if (buttonLeft.isInside(eventX, eventY)) {
                         //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendMove(currentPlayer, -1);
+                        pointerLeft = event.getPointerId(i);
                     }
                     if (buttonRight.isInside(eventX, eventY)) {
                         //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
                         socketHelper.sendMove(currentPlayer, 1);
+                        pointerRight = event.getPointerId(i);
                     }
                     if (buttonFire.isInside(eventX, eventY)) {
                         //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
@@ -241,16 +246,31 @@ public class Tab3View extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                for (int i = 0 ; i < pointer_count ; i++) {
+                    eventX = (int) event.getX(i);
+                    eventY = (int) event.getY(i);
+                    if (buttonLeft.isInside(eventX, eventY)) {
+                        //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
+                        socketHelper.sendMove(currentPlayer, -1);
+                        pointerLeft = event.getPointerId(i);
+                    }
+                    if (buttonRight.isInside(eventX, eventY)) {
+                        //Toast.makeText(getContext(), "Button down", Toast.LENGTH_SHORT).show();
+                        socketHelper.sendMove(currentPlayer, 1);
+                        pointerRight = event.getPointerId(i);
+                    }
+                }
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
                 for (int i = 0 ; i < pointer_count ; i++) {
                     eventX = (int)event.getX(i);
                     eventY = (int)event.getY(i);
-                    if (buttonLeft.isInside(eventX, eventY)) {
+                    int currId = event.getPointerId(i);
+                    if (buttonLeft.isInside(eventX, eventY) && pointerLeft == currId) {
                         socketHelper.sendStop(currentPlayer);
                     }
-                    if (buttonRight.isInside(eventX, eventY)) {
+                    if (buttonRight.isInside(eventX, eventY) && pointerRight == currId) {
                         socketHelper.sendStop(currentPlayer);
                     }
                 }

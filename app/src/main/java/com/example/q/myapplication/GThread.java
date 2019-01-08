@@ -10,7 +10,7 @@ public class GThread extends Thread{
     private boolean running;
     public static Canvas canvas;
 
-    private int targetFPS = 30;
+    private int targetFPS = 60;
     private double averageFPS;
 
 

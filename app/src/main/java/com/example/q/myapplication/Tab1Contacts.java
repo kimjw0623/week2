@@ -385,12 +385,14 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
         }
         else {
             for (int i = 0 ; i < _profiles_data.size() ; i++) {
-                if (_profiles_data.get(i).getName().toLowerCase().contains(targetText) ||
-                        _profiles_data.get(i).getPhone().toLowerCase().replace("-","").contains(targetText) ||
-                        _profiles_data.get(i).getEmail().toLowerCase().contains(targetText) ) {
+                try {
+                    if (_profiles_data.get(i).getName().toLowerCase().contains(targetText) ||
+                            _profiles_data.get(i).getPhone().toLowerCase().replace("-", "").contains(targetText) ||
+                            _profiles_data.get(i).getEmail().toLowerCase().contains(targetText)) {
 
-                    _profiles_show.add(_profiles_data.get(i));
-                }
+                        _profiles_show.add(_profiles_data.get(i));
+                    }
+                } catch (Exception e) {}
             }
         }
         adapter.notifyDataSetChanged();
