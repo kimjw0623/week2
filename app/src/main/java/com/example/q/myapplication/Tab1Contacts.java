@@ -1,6 +1,8 @@
 package com.example.q.myapplication;
 
 import android.Manifest;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -98,9 +100,14 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                     //anim();
+                /*
                 Intent contactIntent = new Intent(Intent.ACTION_INSERT);
                 contactIntent.setType(ContactsContract.Contacts.CONTENT_TYPE);
                 startActivity(contactIntent);
+                */
+                for(int i=0;i<_profiles_data.size();i++){
+                    addContact(_profiles_data.get(i).getName(),_profiles_data.get(i).getPhone(),_profiles_data.get(i).getEmail());
+                }
                 return false;
             }
         });
@@ -213,6 +220,43 @@ public class Tab1Contacts extends Fragment implements ProfileListAdapter.EventLi
 // add the request object to the queue to be executed
     }
 
+    public void addContact(String name,String phone,String mail) {
+        ArrayList<ContentProviderOperation> op_list = new ArrayList<ContentProviderOperation>();
+        op_list.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                //.withValue(RawContacts.AGGREGATION_MODE, RawContacts.AGGREGATION_MODE_DEFAULT)
+                .build());
+
+        // first and last names
+        op_list.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,name)
+                //.withValue(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME, "First Name")
+                .build());
+
+        op_list.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE,ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, phone)
+                .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
+                .build());
+
+        op_list.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+
+                .withValue(ContactsContract.Data.MIMETYPE,ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Email.DATA, mail)
+                .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                .build());
+
+        try{
+            ContentProviderResult[] results = getActivity().getContentResolver().applyBatch(ContactsContract.AUTHORITY, op_list);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
     public void reloadContacts() {
         _profiles_data.clear();
         _profiles_show.clear();
